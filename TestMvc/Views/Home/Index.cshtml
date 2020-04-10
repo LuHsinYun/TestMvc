@@ -1,0 +1,63 @@
+﻿@model IEnumerable<TestMvc.Models.ListViewModel>
+
+@{
+    ViewBag.Title = "Order List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Confirm", "Home", FormMethod.Post, new { id = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.StatusCode == 1)
+                    {
+
+                        @Html.CheckBox("checkbox", new { value = item.OrderId })
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+                <td>
+                    @Html.ActionLink(item.OrderItem, "Detail", new { id = item.ProductId })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <input type="submit" value="Confirm" class="btn btn-info" onclick="if (!confirm('確定更新狀態?')) return false;" />
+}
